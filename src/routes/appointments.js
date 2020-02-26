@@ -34,6 +34,8 @@ module.exports = (db, updateAppointment) => {
 
     const { student, interviewer } = request.body.interview;
 
+    const clientId = request.body.clientId;
+
     db.query(
       `
       INSERT INTO interviews (student, interviewer_id, appointment_id) VALUES ($1::text, $2::integer, $3::integer)
@@ -45,7 +47,7 @@ module.exports = (db, updateAppointment) => {
       .then(() => {
         setTimeout(() => {
           response.status(204).json({});
-          updateAppointment(Number(request.params.id), request.body.interview);
+          updateAppointment(Number(request.params.id), request.body.interview, clientId);
         }, 1000);
       })
       .catch(error => console.log(error));
@@ -57,12 +59,14 @@ module.exports = (db, updateAppointment) => {
       return;
     }
 
+    clientId = request.body.clientId;
+
     db.query(`DELETE FROM interviews WHERE appointment_id = $1::integer`, [
       request.params.id
     ]).then(() => {
       setTimeout(() => {
         response.status(204).json({});
-        updateAppointment(Number(request.params.id), null);
+        updateAppointment(Number(request.params.id), null, clientId);
       }, 1000);
     });
   });
