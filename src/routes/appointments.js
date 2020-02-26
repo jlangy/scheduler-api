@@ -47,7 +47,7 @@ module.exports = (db, updateAppointment) => {
       .then(() => {
         setTimeout(() => {
           response.status(204).json({});
-          updateAppointment(Number(request.params.id), request.body.interview, clientId);
+          updateAppointment(Number(request.params.id), request.body.interview);   //, clientId);
         }, 1000);
       })
       .catch(error => console.log(error));
@@ -59,14 +59,14 @@ module.exports = (db, updateAppointment) => {
       return;
     }
 
-    clientId = request.body.clientId;
+    // clientId = request.body.clientId;
 
     db.query(`DELETE FROM interviews WHERE appointment_id = $1::integer`, [
       request.params.id
     ]).then(() => {
       setTimeout(() => {
         response.status(204).json({});
-        updateAppointment(Number(request.params.id), null, clientId);
+        updateAppointment(Number(request.params.id), null); //, clientId);
       }, 1000);
     });
   });
