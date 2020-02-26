@@ -30,7 +30,7 @@ function updateAppointment(id, interview, clientId) {
           type: "SET_INTERVIEW",
           id,
           interview, 
-          // clientId
+          clientId
         })
       );
     }
